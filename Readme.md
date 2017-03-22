@@ -1,3 +1,3 @@
 ## SQL
-*Some DB Projects we practiced in university*
+*Some DB Projects we practiced back in University*
 
