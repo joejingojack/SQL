@@ -1,0 +1,75 @@
+ CREATE DATABASE MYDBdenkov
+USE MYDBdenkov
+
+CREATE TABLE CUSTOMERS
+(
+cust_id int not null primary key,
+fname varchar(10) not null,
+lname varchar(10) not null
+)
+
+CREATE TABLE CARS
+(
+reg_number char(8) not null primary key,
+mark varchar(10) not null,
+model varchar(10) not null
+)
+
+CREATE TABLE RENTCAR
+(
+cust_id int not null foreign key references CUSTOMERS ON DELETE CASCADE, --a)
+reg_number char(8) not null foreign key references CARS,
+rent_date datetime not null,
+constraint pk_rentcar primary key (cust_id, reg_number),
+sum_paid numeric(5,2) not null
+)
+
+ALTER TABLE CARS 
+ADD color varchar(15)
+
+INSERT INTO CUSTOMERS
+VALUES(11, 'Stoyan', 'Stoyanov');
+INSERT INTO CARS
+VALUES('PB12515MA', 'BMW', 'ÀÇ', 'Yellow');
+INSERT INTO RENTCAR
+VALUES(11, 'PB616MA', GETDATE(), 560.00);
+
+UPDATE CARS
+SET color = 'red'
+where mark = 'audi'
+
+DELETE FROM RENTCAR
+where rent_date < convert(datetime, '20.10.2000', 104)
+
+--vtora to4ka
+USE PC_TRADE_T
+
+SELECT NAME
+FROM DEPARTMENTS
+WHERE STATE = 'WASHINGTON'
+ORDER BY 1 DESC
+
+SELECT R.NAME, COUNT(COUNTRY_ID)
+FROM REGIONS R, COUNTRIES C
+WHERE R.REGION_ID = C.REGION_ID
+GROUP BY r.name
+HAVING COUNT(COUNTRY_ID) > 5
+
+--v)
+SELECT FNAME, LNAME, SALARY
+FROM EMPLOYEES
+WHERE SALARY BETWEEN 15000 AND 30000
+ORDER BY FNAME DESC, LNAME
+
+--3TA TO4KA
+CREATE VIEW CUST_VIEW
+AS
+SELECT LNAME, COUNT(ORDER_ID), NAME
+FROM CUSTOMERS CU LEFT JOIN ORDERS O
+ON CU.CUSTOMER_ID = O.CUSTOMER_ID
+JOIN COUNTRIES CO
+ON CO.COUNTRY_ID = CU.COUNTRY_ID
+WHERE NAME = 'INDIA'
+GROUP BY LNAME, NAME
+
+SELECT * FROM CUST_VIEW
